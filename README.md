@@ -1,5 +1,6 @@
 ## Settings
-![image](https://github.com/wing9537/g-sheet-alarm/assets/37375762/459d0a94-8b64-4c69-bc33-0d5ceba470c1)
+![image](https://github.com/wing9537/g-sheet-alarm/assets/37375762/3c634a69-a377-43cd-9fc8-9d97b70c2e32)
+
 
 ## Gradle 7.5.1
 - Kotlin:       1.6.21
