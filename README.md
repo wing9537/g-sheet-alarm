@@ -23,6 +23,7 @@
 ```
 g-sheet-alarm
 ├── g-sheet-alarm-1.0.0.jar
+├── credential.json
 ├── debug.log
 └── run.sh
 ```

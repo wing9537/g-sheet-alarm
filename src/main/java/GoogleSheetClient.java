@@ -1,15 +1,7 @@
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
@@ -23,15 +15,20 @@ import java.util.stream.Collectors;
 
 public class GoogleSheetClient {
     private static final String APPLICATION_NAME = "Google Sheets Alarm";
-    private final String apiKey = "..."; // secret key here
+    private final String credentialFile = "credential.json";
     private final String spreadsheetId;
     private final Sheets service;
 
     public GoogleSheetClient(String spreadsheetId) throws GeneralSecurityException, IOException {
         this.spreadsheetId = spreadsheetId;
+
+        // Load the service account key file
+        final GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(credentialFile))
+                .createScoped(Collections.singletonList("https://www.googleapis.com/auth/spreadsheets"));
+
+        // Build the Sheets service
         this.service = new Sheets
-            .Builder(GoogleNetHttpTransport.newTrustedTransport(), GsonFactory.getDefaultInstance(), request -> {})
-            .setGoogleClientRequestInitializer(request -> request.set("key", apiKey))
+            .Builder(GoogleNetHttpTransport.newTrustedTransport(), GsonFactory.getDefaultInstance(), credential)
             .setApplicationName(APPLICATION_NAME).build();
     }
 
